@@ -11,15 +11,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     public static PrintWriter out;
     public static BufferedReader in;
     public static RecyclerView rvb, rvp;
-    public static CardAdapter cai, cap;
     static ArrayList<String> banca, player;
     static String resp = "Mano en curso";
     TextView info;
@@ -53,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         rvb = (RecyclerView) findViewById(R.id.rvbanca);
         rvb.setHasFixedSize(true);
-        rvb.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false){
+        rvb.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true){
             public boolean canScrollHorizontally() {return false; }});
         rvp = (RecyclerView) findViewById(R.id.rvplayer);
         rvp.setHasFixedSize(true);
@@ -86,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 if(s.matches("\\w+[\u2660\u2665\u2666\u2663]||\\*\\*"))li.add(new Card(s, this));
             }
             rvb.setAdapter(new CardAdapter(li));
-            li.clear();
+            li = new ArrayList<>();
             for (String s : player) {
                 if (s.matches("\\w+[\u2660\u2665\u2666\u2663]|\\*\\*")) li.add(new Card(s, this));
             }

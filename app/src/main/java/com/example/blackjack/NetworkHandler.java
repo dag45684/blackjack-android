@@ -1,10 +1,8 @@
 package com.example.blackjack;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -49,7 +47,6 @@ public class NetworkHandler implements  Runnable{
         ((MainActivity) c).displayHand();
     }
 
-
     protected static void parseHand(String hand) {
         String[] info = hand.split("<-->");
         Matcher m = Pattern.compile("\\w+[\u2660\u2665\u2666\u2663]|\\*\\*").matcher(info[0]);
@@ -64,7 +61,6 @@ public class NetworkHandler implements  Runnable{
         if (info.length>2){
             if(info[2].matches("(\\w+.)+")){
                 MainActivity.resp = info[2];
-                Log.d("semen", info[2]);
             }else{
                 MainActivity.resp = "Mano en curso";
             }

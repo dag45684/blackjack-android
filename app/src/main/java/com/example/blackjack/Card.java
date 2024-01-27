@@ -1,12 +1,9 @@
 package com.example.blackjack;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 public class Card {
 
-    private Drawable d;
     final int id;
 
     public Card(String input, Context ct){
@@ -26,22 +23,29 @@ public class Card {
                 value.append("clubs_");
                 break;
             default:
-                value = new StringBuilder().append("card_back");
+                value.append("back_card");
         }
         if (input.matches("10.")){
             value.append("10");
         }else if (input.matches("[1-9KQJ].")) {
-            value.append(input.charAt(0));
+            switch (input.charAt(0)){
+                case 'J':
+                    value.append("jack");
+                    break;
+                case 'Q':
+                    value.append("queen");
+                    break;
+                case 'K':
+                    value.append("king");
+                    break;
+                default:
+                    value.append(input.charAt(0));
+            }
         }
-        this.d = Drawable.createFromPath("C:\\Users\\Carlos\\AndroidStudioProjects\\Blackjack\\app\\src\\main\\res\\drawable"+value.toString()+".png");
         this.id = ct.getResources().getIdentifier(value.toString(), "drawable", ct.getPackageName());
     }
 
-    public Drawable getD(){
-        return this.d;
-    }
     public int getId(){
         return this.id;
     }
-
 }
