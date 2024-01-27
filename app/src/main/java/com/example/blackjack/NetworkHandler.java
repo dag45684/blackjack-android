@@ -1,5 +1,6 @@
 package com.example.blackjack;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -7,6 +8,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NetworkHandler implements  Runnable{
 
@@ -25,7 +29,7 @@ public class NetworkHandler implements  Runnable{
         }
     }
 
-    public static void contact(String command) throws InterruptedException {
+    public static void contact(String command, Context c) throws InterruptedException {
         Thread aux = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -33,14 +37,37 @@ public class NetworkHandler implements  Runnable{
                 MainActivity.out.flush();
                 try {
                     String s = MainActivity.in.readLine();
-                    MainActivity.parseHand(s);
+                    parseHand(s);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
         });
         aux.start();
-        Thread.sleep(50);
+        Thread.sleep(100);
         aux.join();
+        ((MainActivity) c).displayHand();
+    }
+
+
+    protected static void parseHand(String hand) {
+        String[] info = hand.split("<-->");
+        Matcher m = Pattern.compile("\\w+[\u2660\u2665\u2666\u2663]|\\*\\*").matcher(info[0]);
+        ArrayList<String> temp = new ArrayList<>();
+        while (m.find()) temp.add(m.group());
+        MainActivity.banca = temp;
+        m = Pattern.compile("\\w+[\u2660\u2665\u2666\u2663]|\\*\\*").matcher(info[1]);
+        temp = new ArrayList<>();
+        while (m.find()) temp.add(m.group());
+        MainActivity.player = temp;
+
+        if (info.length>2){
+            if(info[2].matches("(\\w+.)+")){
+                MainActivity.resp = info[2];
+                Log.d("semen", info[2]);
+            }else{
+                MainActivity.resp = "Mano en curso";
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,42 +58,21 @@ public class MainActivity extends AppCompatActivity {
         rvp.setHasFixedSize(true);
         rvp.setLayoutManager(new LinearLayoutManager(this));
 
-        contactServer("deal");
+        contactServer("deal", this);
 
-        displayHand();
         rvb.getAdapter().notifyDataSetChanged();
         rvp.getAdapter().notifyDataSetChanged();
     }
 
     public void playerAction(View v) {
-        contactServer(v.getTag().toString());
+        contactServer(v.getTag().toString(), this);
     }
 
-    private void contactServer(String command) {
+    private void contactServer(String command, Context c) {
         try {
-            r.contact(command);
+            r.contact(command, this);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    protected static void parseHand(String hand) {
-        String[] info = hand.split("<-->");
-        Matcher m = Pattern.compile("\\w+[\u2660\u2665\u2666\u2663]|\\*\\*").matcher(info[0]);
-        ArrayList<String> temp = new ArrayList<>();
-        while (m.find()) temp.add(m.group());
-        banca = temp;
-        m = Pattern.compile("\\w+[\u2660\u2665\u2666\u2663]|\\*\\*").matcher(info[1]);
-        temp = new ArrayList<>();
-        while (m.find()) temp.add(m.group());
-        player = temp;
-
-        if (info.length>2){
-            if(info[2].matches("(\\w+.)+")){
-                resp = info[2];
-            }else{
-                resp = "Mano en curso";
-            }
         }
     }
 
@@ -110,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
             rvp.setAdapter(new CardAdapter(li));
             info.setText(resp);
+            Log.d("semen", "info text"+resp);
         });
     }
 }
