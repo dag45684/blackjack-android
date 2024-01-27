@@ -45,7 +45,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         }
 
         public void bind(@NonNull Card card){
-            iv.setImageDrawable(card.getD());
+            iv.setImageResource(card.getId());
         }
     }
 }

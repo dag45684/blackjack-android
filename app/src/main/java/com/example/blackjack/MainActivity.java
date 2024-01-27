@@ -53,10 +53,12 @@ public class MainActivity extends AppCompatActivity {
 
         rvb = (RecyclerView) findViewById(R.id.rvbanca);
         rvb.setHasFixedSize(true);
-        rvb.setLayoutManager(new LinearLayoutManager(this));
+        rvb.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false){
+            public boolean canScrollHorizontally() {return false; }});
         rvp = (RecyclerView) findViewById(R.id.rvplayer);
         rvp.setHasFixedSize(true);
-        rvp.setLayoutManager(new LinearLayoutManager(this));
+        rvp.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false){
+            public boolean canScrollHorizontally() {return false; }});
 
         contactServer("deal", this);
 
@@ -81,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(()-> {
             ArrayList<Card> li = new ArrayList<>();
             for (String s : banca) {
-                if(s.matches("\\w+[\u2660\u2665\u2666\u2663]||\\*\\*"))li.add(new Card(s));
+                if(s.matches("\\w+[\u2660\u2665\u2666\u2663]||\\*\\*"))li.add(new Card(s, this));
             }
             rvb.setAdapter(new CardAdapter(li));
             li.clear();
             for (String s : player) {
-                if (s.matches("\\w+[\u2660\u2665\u2666\u2663]|\\*\\*")) li.add(new Card(s));
+                if (s.matches("\\w+[\u2660\u2665\u2666\u2663]|\\*\\*")) li.add(new Card(s, this));
             }
             rvp.setAdapter(new CardAdapter(li));
             info.setText(resp);

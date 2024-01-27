@@ -1,13 +1,15 @@
 package com.example.blackjack;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 public class Card {
 
     private Drawable d;
+    final int id;
 
-    public Card(String input){
+    public Card(String input, Context ct){
         StringBuilder value = new StringBuilder();
         char symbol = input.replaceAll("\\w+", "").charAt(0);
         switch (symbol){
@@ -32,10 +34,14 @@ public class Card {
             value.append(input.charAt(0));
         }
         this.d = Drawable.createFromPath("C:\\Users\\Carlos\\AndroidStudioProjects\\Blackjack\\app\\src\\main\\res\\drawable"+value.toString()+".png");
+        this.id = ct.getResources().getIdentifier(value.toString(), "drawable", ct.getPackageName());
     }
 
     public Drawable getD(){
         return this.d;
+    }
+    public int getId(){
+        return this.id;
     }
 
 }
