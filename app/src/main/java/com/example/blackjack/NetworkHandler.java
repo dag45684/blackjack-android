@@ -1,6 +1,7 @@
 package com.example.blackjack;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,7 +12,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NetworkHandler implements  Runnable{
-
 
     @Override
     public void run() {
@@ -60,10 +60,14 @@ public class NetworkHandler implements  Runnable{
 
         if (info.length>2){
             if(info[2].matches("(\\w+.)+")){
+                Log.d("semen", "que cojonazos pasa aqui" + info[2]);
                 MainActivity.resp = info[2];
-            }else{
-                MainActivity.resp = "Mano en curso";
+                MainActivity.activeHand = false;
             }
+        }else {
+            Log.d("semen", "que cojonazos pasa aqui");
+            MainActivity.resp = "Mano en curso";
+            MainActivity.activeHand = true;
         }
     }
 }

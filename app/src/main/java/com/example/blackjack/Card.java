@@ -27,7 +27,7 @@ public class Card {
         }
         if (input.matches("10.")){
             value.append("10");
-        }else if (input.matches("[1-9KQJ].")) {
+        }else if (input.matches("[2-9KQJA].")) {
             switch (input.charAt(0)){
                 case 'J':
                     value.append("jack");
@@ -37,6 +37,9 @@ public class Card {
                     break;
                 case 'K':
                     value.append("king");
+                    break;
+                case 'A':
+                    value.append("1");
                     break;
                 default:
                     value.append(input.charAt(0));

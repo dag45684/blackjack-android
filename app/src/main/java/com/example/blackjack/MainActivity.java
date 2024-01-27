@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -21,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
     public static PrintWriter out;
     public static BufferedReader in;
     public static RecyclerView rvb, rvp;
+    static boolean activeHand = true;
     static ArrayList<String> banca, player;
     static String resp = "Mano en curso";
+    Button deal, hit, nogo;
     TextView info;
     Thread t;
     NetworkHandler r;
@@ -32,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        info = (TextView) findViewById(R.id.infogame);
-
         t = new Thread((r = new NetworkHandler()));
         t.start();
         try {
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
+        info = (TextView) findViewById(R.id.infogame);
         info.setText(resp);
 
         rvb = (RecyclerView) findViewById(R.id.rvbanca);
@@ -53,10 +55,16 @@ public class MainActivity extends AppCompatActivity {
         rvp.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false){
             public boolean canScrollHorizontally() {return false; }});
 
+        deal = (Button) findViewById(R.id.deal);
+        hit = (Button) findViewById(R.id.hit);
+        nogo = (Button) findViewById(R.id.nogo);
+
         contactServer("deal", this);
 
         rvb.getAdapter().notifyDataSetChanged();
         rvp.getAdapter().notifyDataSetChanged();
+
+
     }
 
     public void playerAction(View v) {
@@ -85,7 +93,14 @@ public class MainActivity extends AppCompatActivity {
             }
             rvp.setAdapter(new CardAdapter(li));
             info.setText(resp);
-            Log.d("semen", "info text"+resp);
+            blockButtons();
         });
+    }
+
+    protected void blockButtons(){
+        hit.setEnabled(resp.contains("Mano") ? true : false);
+        nogo.setEnabled(resp.contains("Mano") ? true : false);
+        deal.setEnabled(resp.contains("Mano") ? false : true);
+
     }
 }
