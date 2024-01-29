@@ -1,6 +1,7 @@
 package com.example.blackjack;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -13,13 +14,19 @@ import java.util.regex.Pattern;
 
 public class NetworkHandler implements  Runnable{
 
+    String username;
+
+    public NetworkHandler (String username){
+        this.username = username;
+    }
+
     @Override
     public void run() {
         try {
             MainActivity.s = new Socket("83.54.41.84", 9999);
             MainActivity.out = new PrintWriter(MainActivity.s.getOutputStream());
             MainActivity.in = new BufferedReader(new InputStreamReader(MainActivity.s.getInputStream()));
-            MainActivity.out.println("nueva:player"); //TODO: Implement nickname input
+            MainActivity.out.println("nueva:"+username); //TODO: Implement nickname input
             MainActivity.out.flush();
             String resp = MainActivity.in.readLine();
         } catch (Exception e) {

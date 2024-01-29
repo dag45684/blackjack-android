@@ -35,7 +35,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        t = new Thread((r = new NetworkHandler()));
+        Bundle b = this.getIntent().getExtras();
+        String username = b.getString("username");
+
+        t = new Thread((r = new NetworkHandler(username)));
         t.start();
         try {
             t.join();
