@@ -26,17 +26,17 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<String> banca, player;
     static String resp = "Mano en curso";
     Button deal, hit, nogo;
-    TextView info;
+    TextView info, txtUserData;
     Thread t;
     NetworkHandler r;
-
+    String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Bundle b = this.getIntent().getExtras();
-        String username = b.getString("username");
+        username = b.getString("username");
 
         t = new Thread((r = new NetworkHandler(username)));
         t.start();
@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         info = (TextView) findViewById(R.id.infogame);
         info.setText(resp);
+
+        txtUserData = findViewById(R.id.txtUserData);
+        txtUserData.setText(username);
+
 
         rvb = (RecyclerView) findViewById(R.id.rvbanca);
         rvb.setHasFixedSize(true);
