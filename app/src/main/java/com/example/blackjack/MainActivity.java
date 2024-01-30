@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<String> banca, player;
     static String resp = "Mano en curso";
     Button deal, hit, nogo;
-    TextView info, txtUserData;
+    TextView info, txtUsername;
     Thread t;
     NetworkHandler r;
     String username;
@@ -49,9 +49,8 @@ public class MainActivity extends AppCompatActivity {
         info = (TextView) findViewById(R.id.infogame);
         info.setText(resp);
 
-        txtUserData = findViewById(R.id.txtUserData);
-        txtUserData.setText(username);
-
+        txtUsername = findViewById(R.id.username);
+        txtUsername.setText(username);
 
         rvb = (RecyclerView) findViewById(R.id.rvbanca);
         rvb.setHasFixedSize(true);
@@ -70,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
         rvb.getAdapter().notifyDataSetChanged();
         rvp.getAdapter().notifyDataSetChanged();
-
-
     }
 
     public void playerAction(View v) {
@@ -108,6 +105,5 @@ public class MainActivity extends AppCompatActivity {
         hit.setEnabled(resp.contains("Mano") ? true : false);
         nogo.setEnabled(resp.contains("Mano") ? true : false);
         deal.setEnabled(resp.contains("Mano") ? false : true);
-
     }
 }
